@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Padrino Latino - 2026</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <iframe
+      id="sc-widget"
+      src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1172346733&color=%23d4af37&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false"
+      width="0"
+      height="0"
+      frameborder="no"
+      scrolling="no"
+      style="display: none"
+      allow="autoplay; encrypted-media"
+    >
+    </iframe>
+
+    <div class="card">
+      <header>
+        <div class="logo-container">
+          <img src="img/logo_pl.png" alt="Padrino" class="logo-gala" />
+        </div>
+        <h1>
+          <span class="texto-dorado">Comienza el 2026 </span>
+          <span class="emoji-header">🥂✨</span>
+        </h1>
+      </header>
+
+      <div id="countdown" class="timer">Calculando para el 2026...</div>
+
+      <div id="content-area">
+        <div class="input-group">
+          <label for="username">Nombre de Invitado</label>
+          <input
+            type="text"
+            id="username"
+            placeholder="Tu alias aquí"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="input-group">
+          <label class="label-conducta">¿Cómo vas a recibir el año?</label>
+          <div class="botones-conducta">
+            <button
+              type="button"
+              class="btn-conducta active bien"
+              onclick="seleccionarConducta(this, 'A todo ritmo')"
+            >
+              🔥 Re manija
+            </button>
+            <button
+              type="button"
+              class="btn-conducta"
+              onclick="seleccionarConducta(this, 'Tranquilo')"
+            >
+              😴 Tempranito a casa
+            </button>
+            <button
+              type="button"
+              class="btn-conducta"
+              onclick="seleccionarConducta(this, 'En el casino')"
+            >
+              🎰 timbeando fuerte
+            </button>
+          </div>
+          <input type="hidden" id="conducta-elegida" value="A todo ritmo" />
+        </div>
+
+        <button id="main-button" onclick="handleAccion()">
+          ¡ANÓTAME PARA EL BRINDIS! 🍾
+        </button>
+      </div>
+
+      <div id="success-message" style="display: none">
+        <div class="emoji-navidad">🍾</div>
+        <h2 style="color: #d4af37; margin-top: 0; font-weight: 800">
+          ¡Todo listo!
+        </h2>
+        <p
+          id="user-welcome"
+          style="
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #fff;
+            margin: 10px 0;
+          "
+        ></p>
+        <p style="color: #aaa; font-size: 0.9em; padding: 0 10px">
+          Ya te pusimos en la lista de los que arrancan el año ganando. Poné las
+          cervezas en el freezer y aguantá la manija: a las 00:00 se pudre todo
+          y liberamos los regalos. ¡No te duermas!
+        </p>
+      </div>
+
+      <div
+        id="music-control"
+        onclick="toggleSoundCloud()"
+        title="Música de Gala"
+      >
+        <span id="music-icon">🔇</span>
+      </div>
+    </div>
+
+    <div class="fireworks-container">
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
