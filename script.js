@@ -8,8 +8,8 @@ const regalosDisponibles = [
     "1111 fichas gratis"
 ];
 
-// Fecha objetivo: Año Nuevo 2026
-const targetDate = new Date('January 1, 2026 00:00:00').getTime();
+// --- PRUEBA PILOTO: Finaliza hoy 31 de Dic a las 15:05 ---
+const targetDate = new Date('December 31, 2025 15:06:00').getTime();
 
 // --- AL CARGAR LA PÁGINA ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -19,11 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const userObj = JSON.parse(cachedUser);
         const now = new Date().getTime();
 
-        // Si ya pasó la medianoche, revelamos el regalo
         if (now >= targetDate) {
             revelarRegalo();
         } else {
-            // Si no, lo mantenemos en la pantalla de espera con el mensaje misterioso
             mostrarPantallaEspera(userObj.nombre);
         }
     }
@@ -41,7 +39,6 @@ function handleAccion() {
         return;
     }
 
-    // 1. Guardar en LocalStorage
     const datosUsuario = {
         nombre: user,
         actitud: conducta,
@@ -50,10 +47,7 @@ function handleAccion() {
     };
     localStorage.setItem('padrino_user', JSON.stringify(datosUsuario));
 
-    // 2. Efecto visual (Fuegos artificiales de gala)
     lanzarFuegosDeGala(); 
-
-    // 3. Cambiar Interfaz a espera misteriosa
     mostrarPantallaEspera(user);
 }
 
@@ -64,7 +58,7 @@ function seleccionarConducta(btn, valor) {
     document.getElementById('conducta-elegida').value = valor;
 }
 
-// --- PANTALLA DE ESPERA (MENSAJE MISTERIOSO ACTUALIZADO) ---
+// --- PANTALLA DE ESPERA ---
 function mostrarPantallaEspera(user) {
     document.getElementById('content-area').style.display = 'none';
     const successDiv = document.getElementById('success-message');
@@ -72,13 +66,12 @@ function mostrarPantallaEspera(user) {
     successDiv.querySelector('h2').innerHTML = "¡DALE QUE ARRANCA! 🚀";
     document.getElementById('user-welcome').innerText = `¡Ya estás en la lista, ${user}!`;
     
-    // Mensaje sin decir los premios específicos
-    successDiv.querySelector('p:last-child').innerText = "Poné las bebidas en el freezer y aguantá la manija. Volvé exactamente a las 00:00 para descorchar tu sorpresa: el Padrino ya tiene algo preparado para que arranques el 2026 rompiendo la banca. ¡No te duermas!";
+    successDiv.querySelector('p:last-child').innerText = "Poné las bebidas en el freezer y aguantá la manija. Volvé exactamente a las 15:05 para descorchar tu sorpresa: el Padrino ya tiene algo preparado para que arranques el 2026 rompiendo la banca.";
     
     successDiv.style.display = 'block';
 }
 
-// --- CONTADOR HACIA EL BRINDIS ---
+// --- CONTADOR EN TIEMPO REAL ---
 const timerInterval = setInterval(() => {
     const now = new Date().getTime();
     const distance = targetDate - now;
@@ -86,13 +79,13 @@ const timerInterval = setInterval(() => {
 
     if (distance <= 0) {
         clearInterval(timerInterval);
-        countdownEl.innerHTML = "¡FELIZ 2026! 🥂";
+        countdownEl.innerHTML = "¡PRUEBA FINALIZADA! 🥂";
         revelarRegalo();
     } else {
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        countdownEl.innerHTML = `${hours}h ${minutes}m ${seconds}s para año nuevo`;
+        countdownEl.innerHTML = `TEST: ${minutes}m ${seconds}s restantes`;
     }
 }, 1000);
 
@@ -103,7 +96,6 @@ function revelarRegalo() {
 
     let userObj = JSON.parse(cachedUser);
 
-    // Asignación aleatoria si aún no tiene premio guardado
     if (!userObj.regaloAsignado) {
         const indiceAleatorio = Math.floor(Math.random() * regalosDisponibles.length);
         userObj.regaloAsignado = regalosDisponibles[indiceAleatorio];
@@ -115,19 +107,25 @@ function revelarRegalo() {
     
     successDiv.innerHTML = `
         <div class="emoji-navidad">🍾</div>
-        <h2 style="color: #d4af37; font-weight: 800;">¡FELIZ AÑO NUEVO!</h2>
-        <p style="color: #fff; margin-bottom: 5px;">${userObj.nombre}, el Padrino te entrega:</p>
+        <h2 style="color: #d4af37; font-weight: 800;">¡PRUEBA EXITOSA!</h2>
+        <p style="color: #fff; margin-bottom: 5px;">${userObj.nombre}, simulamos tu premio:</p>
+        
         <div style="background: #000; padding: 25px; border: 2px solid #d4af37; border-radius: 15px; margin: 20px 0; box-shadow: 0 0 20px rgba(212,175,55,0.4);">
             <span style="font-size: 1.8rem; font-weight: 900; color: #ffd700; text-shadow: 0 0 10px rgba(212,175,55,0.6);">
                 ${userObj.regaloAsignado}
             </span>
         </div>
-        <p style="font-size: 0.85rem; color: #aaa;">¡Tomá una captura de pantalla y enviala al soporte para acreditarlo!</p>
-        <button id="main-button" onclick="location.reload()" style="margin-top: 15px; width: auto; padding: 10px 30px;">RECARGAR</button>
+
+        <p style="font-size: 1.1rem; color: #fff; font-weight: 700; line-height: 1.4; margin: 20px 0; padding: 0 10px;">
+            ¡COMPARTINOS TU PREMIO POR MENSAJE CON UNA CAPTURA PARA PODER DÁRTELO! 📸
+        </p>
+
+        <button id="main-button" onclick="localStorage.clear(); location.reload();" style="margin-top: 10px; width: auto; padding: 10px 40px; background: #444; color: white;">
+            RESETEAR TEST (Borrar memoria)
+        </button>
     `;
     successDiv.style.display = 'block';
     
-    // Disparo de confeti al revelar
     confetti({
         particleCount: 200,
         spread: 90,
@@ -136,42 +134,27 @@ function revelarRegalo() {
     });
 }
 
-// --- EFECTOS VISUALES (FIREWORKS) ---
+// --- FUEGOS DE GALA ---
 function lanzarFuegosDeGala() {
     var duration = 4 * 1000;
     var animationEnd = Date.now() + duration;
     var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
     function randomInRange(min, max) { return Math.random() * (max - min) + min; }
 
     var interval = setInterval(function() {
         var timeLeft = animationEnd - Date.now();
         if (timeLeft <= 0) return clearInterval(interval);
-
         var particleCount = 40 * (timeLeft / duration);
-        confetti(Object.assign({}, defaults, { 
-            particleCount, 
-            origin: { x: randomInRange(0.1, 0.4), y: Math.random() - 0.2 },
-            colors: ['#d4af37', '#ffffff'] 
-        }));
-        confetti(Object.assign({}, defaults, { 
-            particleCount, 
-            origin: { x: randomInRange(0.6, 0.9), y: Math.random() - 0.2 },
-            colors: ['#ffd700', '#f9f295']
-        }));
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.4), y: Math.random() - 0.2 }, colors: ['#d4af37', '#ffffff'] }));
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.6, 0.9), y: Math.random() - 0.2 }, colors: ['#ffd700', '#f9f295'] }));
     }, 250);
 }
 
-// --- CONTROL DE MÚSICA ---
+// --- MÚSICA ---
 let playing = false;
-const widget = SC.Widget('sc-widget');
 function toggleSoundCloud() {
-    if (!playing) { 
-        widget.play(); 
-        document.getElementById('music-icon').innerText = "🔊"; 
-    } else { 
-        widget.pause(); 
-        document.getElementById('music-icon').innerText = "🔇"; 
-    }
+    const widget = SC.Widget(document.getElementById('sc-widget'));
+    if (!playing) { widget.play(); document.getElementById('music-icon').innerText = "🔊"; } 
+    else { widget.pause(); document.getElementById('music-icon').innerText = "🔇"; }
     playing = !playing;
 }
