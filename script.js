@@ -92,7 +92,7 @@ const timerInterval = setInterval(() => {
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        countdownEl.innerHTML = `${hours}h ${minutes}m ${seconds}s para tu sorpresa`;
+        countdownEl.innerHTML = `${hours}h ${minutes}m ${seconds}s para año nuevo`;
     }
 }, 1000);
 
